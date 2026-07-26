@@ -1,3 +1,5 @@
+using BlogApp.Data.Abstract;
+using BlogApp.Data.Concrete;
 using BlogApp.Data.Concrete.EfCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +14,8 @@ builder.Services.AddDbContext<BlogContext>(options =>
     // var version = new MySqlServerVersion(new Version(8,0,46));
     // options.UseMySql(connectionString, version);
 });
+
+builder.Services.AddScoped<IPostRepository, EfPostRepository>();
 
 var app = builder.Build();
 SeedData.FillTestData(app);

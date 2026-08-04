@@ -28,8 +28,8 @@ namespace BlogApp.Data.Concrete.EfCore
                 if (!context.Users.Any())
                 {
                     context.Users.AddRange(
-                        new User{UserName="sadikturan"},
-                        new User{UserName="melihdincer"}
+                        new User{UserName="sadikturan", Image="p1.jpg"},
+                        new User{UserName="melihdincer", Image="p2.jpg"}
                     );
                     context.SaveChanges();
                 }
@@ -45,7 +45,14 @@ namespace BlogApp.Data.Concrete.EfCore
                             Image = "1.jpg",
                             PublishedOn = DateTime.Now.AddDays(-10),
                             Tags = context.Tags.Take(3).ToList(),
-                            UserID = 1
+                            UserID = 1,
+                            Comments = new List<Comment>
+                            {
+                                new Comment{Text="asp.net core çok güzel bir framework",
+                                PublishedOn = DateTime.Now.AddHours(-5),
+                                 UserID=2},
+                                new Comment{Text="asp.net core ile web uygulamaları geliştirebilirsiniz", PublishedOn = DateTime.Now.AddHours(-3), UserID=1}
+                            }
                         },
                         new Post
                         {
@@ -89,7 +96,14 @@ namespace BlogApp.Data.Concrete.EfCore
                             Image = "3.jpg",
                             PublishedOn = DateTime.Now.AddDays(-40),
                             Tags = context.Tags.Take(4).ToList(),
-                            UserID = 1
+                            UserID = 1,
+                            Comments = new List<Comment>
+                            {
+                                new Comment{Text="Angular guzel bir framework",
+                                PublishedOn = DateTime.Now.AddHours(-1),
+                                 UserID=2},
+                                new Comment{Text="Severek kullanıyorum bu frameworkü.", PublishedOn = DateTime.Now, UserID=1}
+                            }
                         },
                         new Post
                         {

@@ -29,6 +29,6 @@ public class PostsController : Controller
 
     public async Task<IActionResult> Details(string? url)
     {
-        return View(await _postRepository.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Url == url));
+        return View(await _postRepository.Posts.Include(p => p.Tags).Include(p => p.Comments).ThenInclude(c => c.User).FirstOrDefaultAsync(p => p.Url == url));
     }
 }

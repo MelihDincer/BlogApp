@@ -21,9 +21,10 @@
         <div class ="bg-white mt-3">
             <div class="card border-0">
                 <div class="card-header pb-0">
-                    <h4>@Model.Comments.Count() Yorum</h4>
+                    <h4><span id="commentCount">@Model.Comments.Count()</span> Yorum</h4>
                 </div>
                 <div class="card-body">
+                    <div id="comments">
                     @foreach(var comment in Model.Comments)
                     {
                     <div class="my-4 d-flex">
@@ -34,16 +35,16 @@
                                 <p class="text-muted small">@comment.PublishedOn.ToString("dd MMMM yyyy HH:mm")</p>
                             </div>
                             <p>@comment.Text</p>
-                        </div>
-                        
+                        </div>                      
                     </div>
                     }
+                    </div>
                     <hr class="my-4">
                     <div>
                         <h4 class="mb-3">Yorum Ekle</h4>
                         <form action="/posts/AddComment" method="post">
-                        <input type="hidden" name="PostId" value="@Model.PostID">
-                        <input type="hidden" name="PostUrl" value="@Model.Url">
+                        <input type="hidden" id="PostId" name="PostId" value="@Model.PostID">
+                        <input type="hidden" id="PostUrl" name="PostUrl" value="@Model.Url">
                         <div class="mb-3">
                             <label for="UserName" class="form-label">UserName</label>
                             <input type="text" name="UserName" id="UserName" class="form-control">
@@ -53,7 +54,7 @@
                             <textarea type="text" name="Text" id="Text" rows="3" class="form-control"></textarea>
                         </div>
                         <div class="mb-3">
-                            <button type="=submit" class="btn btn-primary">Kaydet</button>
+                            <button id="commentSubmit" type="=submit" class="btn btn-primary">Kaydet</button>
                         </div>
                         </form>
                     </div>
@@ -66,5 +67,54 @@
         <vc:new-posts></vc:new-posts>
     </div>
 </div>
+
+@section Scripts {
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#commentSubmit').click(function(){
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddComment")',
+                dataType: "json",
+                data: {
+                    PostId: $('#PostId').val(),
+                    UserName: $('#UserName').val(),
+                    Text: $('#Text').val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert('Yorum başarıyla eklendi!');
+                        var date = new Date(response.publishedOn);
+                        $("#comments").append(
+                            `<div class="my-4 d-flex">
+                        <img class="avatar rounded-circle float-start me-3" src="/img/${response.image}"/>
+                        <div>
+                            <div class="mb-2 d-flex">
+                                <h6 class="fw-bold me-2">${response.userName}</h6>
+                                <p class="text-muted small">${date.toLocaleString()}</p>
+                            </div>
+                            <p>${response.text}</p>
+                        </div>                      
+                    </div>`
+                        );
+                        $('#UserName').val('');
+                        $('#Text').val('');
+                        var commentCount = parseInt($('#commentCount').text());
+                        $('#commentCount').text(commentCount + 1);
+                    } else {
+                        // Hata durumunda yapılacak işlemler
+                        alert('Yorum eklenirken bir hata oluştu: ' + response.message);
+                    }
+                }
+            });
+            return false;
+        });
+        
+    });
+</script>
+}
+
 
     

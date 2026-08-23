@@ -35,7 +35,7 @@ public class PostsController : Controller
         return View(await _postRepository.Posts.Include(p => p.Tags).Include(p => p.Comments).ThenInclude(c => c.User).FirstOrDefaultAsync(p => p.Url == url));
     }
 
-    public IActionResult AddComment(int postId, string userName, string text, string postUrl)
+    public JsonResult AddComment(int postId, string userName, string text, string postUrl)
     {
         var entity = new Comment
         {
@@ -49,6 +49,10 @@ public class PostsController : Controller
         };
         _commentRepository.CreateComment(entity);
         // return Redirect("/posts/details/" + Url);
-        return RedirectToRoute("post-details", new {Url = postUrl});
+        // return RedirectToRoute("post-details", new {Url = postUrl});
+        return Json(new
+        {
+            success = true, userName, text, entity.PublishedOn, entity.User.Image
+        });
     }
 }

@@ -28,13 +28,35 @@
                     {
                     <div class="my-4 d-flex">
                         <img class="avatar rounded-circle float-start me-3" src="~/img/@comment.User.Image"/>
-                        <div class="mb-2">
-                            <h6 class="fw-bold">@comment.User.UserName</h6>
-                            <p class="text-muted small">@comment.PublishedOn.ToString("dd MMMM yyyy HH:mm")</p>
+                        <div>
+                            <div class="mb-2 d-flex">
+                                <h6 class="fw-bold me-2">@comment.User.UserName</h6>
+                                <p class="text-muted small">@comment.PublishedOn.ToString("dd MMMM yyyy HH:mm")</p>
+                            </div>
                             <p>@comment.Text</p>
                         </div>
+                        
                     </div>
                     }
+                    <hr class="my-4">
+                    <div>
+                        <h4 class="mb-3">Yorum Ekle</h4>
+                        <form action="/posts/AddComment" method="post">
+                        <input type="hidden" name="PostId" value="@Model.PostID">
+                        <input type="hidden" name="PostUrl" value="@Model.Url">
+                        <div class="mb-3">
+                            <label for="UserName" class="form-label">UserName</label>
+                            <input type="text" name="UserName" id="UserName" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="Text" class="form-label">Yorum</label>
+                            <textarea type="text" name="Text" id="Text" rows="3" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <button type="=submit" class="btn btn-primary">Kaydet</button>
+                        </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

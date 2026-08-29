@@ -14,6 +14,23 @@
             <a class="navbar-brand" href="/posts">
             <i class="bi bi-code">Blog App</i>
             </a>
+            <ul class="navbar-nav ms-auto">
+                @if(User.Identity!.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">@User.Identity.Name</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/logout">Oturumu Kapat</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/login">Oturum Aç</a>
+                    </li>
+                }
+            </ul>
         </div>
     </nav>
     <div class="container mt-3">

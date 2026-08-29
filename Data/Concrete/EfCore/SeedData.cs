@@ -40,6 +40,7 @@ namespace BlogApp.Data.Concrete.EfCore
                         {
                             Title = "Asp.net core",
                             Content = "Asp.net core dersleri",
+                            Description = "Asp.net core dersleri",
                             Url = "aspnet-core",
                             IsActive = true,
                             Image = "1.jpg",
@@ -58,6 +59,7 @@ namespace BlogApp.Data.Concrete.EfCore
                         {
                             Title = "PHP",
                             Content = "PHP dersleri",
+                            Description = "",
                             Url = "php",
                             IsActive = true,
                             Image = "2.jpg",
@@ -69,6 +71,7 @@ namespace BlogApp.Data.Concrete.EfCore
                         {
                             Title = "Python",
                             Content = "Python dersleri",
+                            Description = "Python dersleri",
                             Url = "python",
                             IsActive = true,
                             Image = "3.jpg",
@@ -80,6 +83,7 @@ namespace BlogApp.Data.Concrete.EfCore
                         {
                             Title = "React",
                             Content = "React dersleri",
+                            Description = "React dersleri",
                             Url = "react",
                             IsActive = true,
                             Image = "3.jpg",
@@ -91,6 +95,7 @@ namespace BlogApp.Data.Concrete.EfCore
                         {
                             Title = "Angular",
                             Content = "Angular dersleri",
+                            Description = "Angular dersleri",
                             Url = "angular",
                             IsActive = true,
                             Image = "3.jpg",
@@ -109,6 +114,7 @@ namespace BlogApp.Data.Concrete.EfCore
                         {
                             Title = "Web Design",
                             Content = "Web Design dersleri",
+                            Description = "Web Design dersleri",
                             Url = "web-design",
                             IsActive = true,
                             Image = "3.jpg",

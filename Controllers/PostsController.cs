@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using BlogApp.Entity;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlogApp.Controllers;
 
@@ -20,7 +21,7 @@ public class PostsController : Controller
     }
     public async Task<IActionResult> Index(string tag)
     {        
-        var posts = _postRepository.Posts;
+        var posts = _postRepository.Posts.Where(p => p.IsActive);
         if(!string.IsNullOrEmpty(tag))
         {
             posts = posts.Where(p => p.Tags.Any(t => t.Url == tag));
@@ -58,6 +59,7 @@ public class PostsController : Controller
         });
     }
 
+    [Authorize]
     public IActionResult Create()
     {
      return View();   
@@ -80,6 +82,64 @@ public class PostsController : Controller
                IsActive = false
             });
             return RedirectToAction("Index");
+        }
+        return View(model);
+    }
+
+    [Authorize]
+    public async Task<IActionResult> List()
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "");
+        var role = User.FindFirstValue(ClaimTypes.Role);
+        var posts = _postRepository.Posts;
+        if (string.IsNullOrEmpty(role))
+        {
+            posts = posts.Where(p => p.UserID == userId);
+        }
+        return View(await posts.ToListAsync());   
+    }
+
+    [Authorize]
+    public async Task<IActionResult> Edit(int id)
+    {
+        if(id == null)
+        {
+            return NotFound();
+        }
+        var post = _postRepository.Posts.FirstOrDefault(p => p.PostID == id);
+        if(post == null)
+        {
+            return NotFound();
+        }
+        return View(new PostCreateViewModel
+        {
+            PostId = post.PostID,
+            Title = post.Title,
+            Description = post.Description,
+            Content = post.Content,
+            Url = post.Url,
+            IsActive = post.IsActive
+        });
+    }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> Edit(PostCreateViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var entityToUpdate = new Post {
+            PostID = model.PostId,
+            Title = model.Title,
+            Description = model.Description,
+            Content = model.Content,
+            Url = model.Url
+            };
+            if(User.FindFirstValue(ClaimTypes.Role) == "admin") {
+                entityToUpdate.IsActive = model.IsActive;
+            }
+            _postRepository.EditPost(entityToUpdate);
+            return RedirectToAction("List");
         }
         return View(model);
     }

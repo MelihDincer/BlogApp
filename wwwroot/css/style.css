@@ -1,12 +1,17 @@
 body {
-    background-color: #eff2f6;
+  background-color: #eff2f6;
 }
 
 a {
-    text-decoration: none !important;
+  text-decoration: none !important;
 }
 
 .avatar {
-    width: 3rem;
-    height: 3rem;
+  width: 3rem;
+  height: 3rem;
+}
+
+.tox-promotion,
+.tox-statusbar__right-container {
+  display: none !important;
 }

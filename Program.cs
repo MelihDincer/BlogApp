@@ -41,7 +41,7 @@ SeedData.FillTestData(app);
 
 // app.MapDefaultControllerRoute();
 app.MapControllerRoute(
-    name: "post-details",
+    name: "post_details",
     pattern: "posts/details/{url}",
     defaults: new { controller = "Posts", action = "Details" }
 );
@@ -49,6 +49,11 @@ app.MapControllerRoute(
     name: "post_by_tag",
     pattern: "posts/tag/{tag}",
     defaults: new { controller = "Posts", action = "Index" }
+);
+app.MapControllerRoute(
+    name: "user_profile",
+    pattern: "profile/{username}",
+    defaults: new { controller = "Users", action = "Profile" }
 );
 app.MapControllerRoute(
     name: "default",

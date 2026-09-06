@@ -35,7 +35,7 @@ public class PostsController : Controller
 
     public async Task<IActionResult> Details(string? url)
     {
-        return View(await _postRepository.Posts.Include(p => p.Tags).Include(p => p.Comments).ThenInclude(c => c.User).FirstOrDefaultAsync(p => p.Url == url));
+        return View(await _postRepository.Posts.Include(x => x.User).Include(p => p.Tags).Include(p => p.Comments).ThenInclude(c => c.User).FirstOrDefaultAsync(p => p.Url == url));
     }
 
     public JsonResult AddComment(int postId, string text, string postUrl)
@@ -52,7 +52,7 @@ public class PostsController : Controller
         };
         _commentRepository.CreateComment(entity);
         // return Redirect("/posts/details/" + Url);
-        // return RedirectToRoute("post-details", new {Url = postUrl});
+        // return RedirectToRoute("post_details", new {Url = postUrl});
         return Json(new
         {
             success = true, userName, text, entity.PublishedOn, avatar
